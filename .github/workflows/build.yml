@@ -1,0 +1,38 @@
+name: GitHub Pages
+
+on: workflow_dispatch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps: 
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+          fetch-depth: 0
+      
+      - uses: actions/checkout@v3
+        with:
+          repository: Malsius/notion-md-fetcher
+          path: notion-md-fetcher
+      
+      - name: Fetch Notion pages
+        run: notion-md-fetcher/script.py --static static --content content --db ${{ secrets.NOTION_DB_ID }} --key ${{ secrets.NOTION_API_KEY }}
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: 'latest'
+          extended: true
+
+      - name: Build
+        run: hugo
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: ./public
+          cname: malsius.com
+          force_orphan: true

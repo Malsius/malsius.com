@@ -1,0 +1,92 @@
+baseURL: "https://malsius.com"
+title: Malsius
+theme: PaperMod
+
+paginate: 5
+enableInlineShortcodes: true
+enableRobotsTXT: true
+enableEmoji: true
+pygmentsUseClasses: true
+
+minify:
+  disableXML: true
+
+outputs:
+  home:
+    - HTML
+    - JSON
+
+menu:
+  main:
+    - name: Categories
+      url: categories/
+      weight: 1
+    - name: Tags
+      url: tags/
+      weight: 2
+    - name: Search
+      url: search/
+      weight: 3
+    - name: About
+      url: about/
+      weight: 4
+
+params:
+  env: production
+  description: "Blog about cybersecurity, CTF and IT."
+  keywords: [blog, cybersecurity, ctf, hacking, it, tech]
+  defaultTheme: dark
+  disableThemeToggle: true
+  disableSpecial1stPost: true
+  ShowCodeCopyButtons: true
+  ShowToc: true
+
+  mainSections:
+    - posts
+
+  profileMode:
+    enabled: false
+    title: Malsius
+    imageUrl: "avatar.png"
+    imageTitle: "Malsius"
+    imageWidth: 120
+    imageHeight: 120
+    subtitle: "Cybersecurity student | Tech enthusiast"
+
+  socialIcons:
+    - name: twitter
+      url: "https://twitter.com/0xMalsius"
+    - name: github
+      url: "https://github.com/Malsius"
+    - name: tryhackme
+      url: "https://tryhackme.com/p/Malsius"
+    - name: hackthebox
+      url: "https://app.hackthebox.com/users/672972"
+    - name: rootme
+      url: "https://www.root-me.org/Malsius"
+
+  label:
+    text: "Malsius"
+    icon: "avatar.png"
+    iconHeight: 30
+  
+  assets:
+    favicon: "favicons/favicon.ico"
+    favicon16x16:  "favicons/favicon-16x16.png"
+    favicon32x32:  "favicons/favicon-32x32.png"
+    apple_touch_icon:  "favicons/apple-touch-icon.png"
+    safari_pinned_tab:  "favicons/favicon.ico"
+
+  fuseOpts:
+    isCaseSensitive: false
+    shouldSort: true
+    location: 0
+    distance: 1000
+    threshold: 0.4
+    minMatchCharLength: 0
+    keys: ["title", "permalink", "summary", "content"]
+
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
