@@ -13,11 +13,11 @@ jobs:
       
       - uses: actions/checkout@v3
         with:
-          repository: Malsius/notion-md-fetcher
-          path: notion-md-fetcher
+          repository: Malsius/notion-md
+          path: notion-md
       
       - name: Fetch Notion pages
-        run: notion-md-fetcher/script.py --static static/images --content content/posts --url /images --db ${{ secrets.NOTION_DB_ID }} --key ${{ secrets.NOTION_API_KEY }} --hugo
+        run: notion-md/script.py --static static/images --content content/posts --url /images --db ${{ secrets.NOTION_DB_ID }} --key ${{ secrets.NOTION_API_KEY }} --hugo
 
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2
