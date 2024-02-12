@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>HackDay 2022 - WebSDR | Malsius</title>
+<meta name="keywords" content="ctf, hackday, hardware">
+<meta name="description" content="Subject At nightfall, everything lights up. A beacon emits a signal in order to be recovered. The signal is transmitted at 3.58 MHz every minute for about 30 seconds. Find the message transmitted. The flag is of the form HACKDAY{&hellip;}
+Find the transmitted signal According to the subject, the signal is only transmitted in the evening.
+By going to WebSDR F5NKP (for example) we will be able to listen to the different signals transmitted on the radio waves.">
+<meta name="author" content="">
+<link rel="canonical" href="https://malsius.com/hackday-2022-websdr/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.5cfc680b1eeaeef9efbced92d46c2a9e876b72ee14fba85846afc4cff9e6e6f8.css" integrity="sha256-XPxoCx7q7vnvvO2S1Gwqnodrcu4U&#43;6hYRq/Ez/nm5vg=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://malsius.com/favicons/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://malsius.com/favicons/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://malsius.com/favicons/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://malsius.com/favicons/apple-touch-icon.png">
+<link rel="mask-icon" href="https://malsius.com/favicons/favicon.ico">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+</noscript><style>
+    @media screen and (min-width: 769px) {
+
+         
+        .post-content input[type="checkbox"]:checked~label>img {
+            transform: scale(1.6);
+            cursor: zoom-out;
+            position: relative;
+            z-index: 999;
+        }
+
+        .post-content img.zoomCheck {
+            transition: transform 0.15s ease;
+            z-index: 999;
+            cursor: zoom-in;
+        }
+    }
+</style>
+<meta property="og:title" content="HackDay 2022 - WebSDR" />
+<meta property="og:description" content="Subject At nightfall, everything lights up. A beacon emits a signal in order to be recovered. The signal is transmitted at 3.58 MHz every minute for about 30 seconds. Find the message transmitted. The flag is of the form HACKDAY{&hellip;}
+Find the transmitted signal According to the subject, the signal is only transmitted in the evening.
+By going to WebSDR F5NKP (for example) we will be able to listen to the different signals transmitted on the radio waves." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://malsius.com/hackday-2022-websdr/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-07-10T00:00:00+00:00" />
+<meta property="article:modified_time" content="2022-07-10T00:00:00+00:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="HackDay 2022 - WebSDR"/>
+<meta name="twitter:description" content="Subject At nightfall, everything lights up. A beacon emits a signal in order to be recovered. The signal is transmitted at 3.58 MHz every minute for about 30 seconds. Find the message transmitted. The flag is of the form HACKDAY{&hellip;}
+Find the transmitted signal According to the subject, the signal is only transmitted in the evening.
+By going to WebSDR F5NKP (for example) we will be able to listen to the different signals transmitted on the radio waves."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Posts",
+      "item": "https://malsius.com/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "HackDay 2022 - WebSDR",
+      "item": "https://malsius.com/hackday-2022-websdr/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "HackDay 2022 - WebSDR",
+  "name": "HackDay 2022 - WebSDR",
+  "description": "Subject At nightfall, everything lights up. A beacon emits a signal in order to be recovered. The signal is transmitted at 3.58 MHz every minute for about 30 seconds. Find the message transmitted. The flag is of the form HACKDAY{\u0026hellip;}\nFind the transmitted signal According to the subject, the signal is only transmitted in the evening.\nBy going to WebSDR F5NKP (for example) we will be able to listen to the different signals transmitted on the radio waves.",
+  "keywords": [
+    "ctf", "hackday", "hardware"
+  ],
+  "articleBody": "Subject At nightfall, everything lights up. A beacon emits a signal in order to be recovered. The signal is transmitted at 3.58 MHz every minute for about 30 seconds. Find the message transmitted. The flag is of the form HACKDAY{…}\nFind the transmitted signal According to the subject, the signal is only transmitted in the evening.\nBy going to WebSDR F5NKP (for example) we will be able to listen to the different signals transmitted on the radio waves.\nWe must then go to the good frequency, at 3.58 MHz (3580 kHz).\nAfter having tested the different modes, CW seems to be the most conclusive.\nIndeed, it is on this one that we can hear a signal emitted every minute for about 30s quite distinctly.\nWe could think at first that it looks like morse code.\nWe can notice that a similar signal is also emitted 400 Hz further.\nDecode the signal For the rest of the analysis, I recorded the two signals to be able to analyze them locally.\nAfter many hours without finding anything, I decided to take a first hint (these cost points and are included in each challenge).\nHint : FSK\nThanks to this one I could understand that it was about signal modulation.\nWikipedia definition:\nFrequency shift keying (FSK) is a digital frequency modulation mode in which the frequency of the modulated signal varies between predetermined frequencies.\nTo make simple, this modulation makes it possible to retranscribe a binary message in the form of signal, in which the 2 predefined frequencies represent the 0 and the 1.\nThis is visible in the Audacity frequency analyzer with two frequency peaks, one at 470 Hz and the other at 870 Hz. This is the same as the 400 Hz spacing between the two transmitted signals seen above.\nOnce you zoom in on the signal, you can see the 0 and 1 that “appear”.\nTo decode the whole we can have 2 approaches:\nmanual\nautomated\nAs I didn’t find anything conclusive to automate my task, I decided to do it manually.\nThanks to the first “bits” of the signal (the padding), we can settle on the fact that a bit measures about 2 cm (yes it is quite archaic as a method).\nI was then helped by a member of my team who noted the bits while I “read” them on Audacity.\nHalfway through (more precisely, at what looked like the padding at the beginning), I started trying to convert the result from binary to ASCII, which was inconclusive.\nSo I tried to search for “HACKDAY{}”, character by character, in all this sequence of 0 and 1, which allowed me to realize that each of them was preceded by a bit and succeeded by 3 bits.\nThese turned out to be the UART bits.\nBy identifying the characters one by one, and skipping the ones that were badly decoded, I was able to find the flag and solve the challenge.\nThank you Quentin CHAUVIN for this challenge and for your advice.\n",
+  "wordCount" : "502",
+  "inLanguage": "en",
+  "datePublished": "2022-07-10T00:00:00Z",
+  "dateModified": "2022-07-10T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://malsius.com/hackday-2022-websdr/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Malsius",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://malsius.com/favicons/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class=" dark" id="top">
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://malsius.com" accesskey="h" title="Malsius (Alt + H)">
+                <img src="https://malsius.com/avatar.png" alt="" aria-label="logo"
+                    height="30">Malsius</a>
+            <div class="logo-switches">
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://malsius.com/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://malsius.com/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://malsius.com/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://malsius.com/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      HackDay 2022 - WebSDR
+    </h1>
+    <div class="post-meta"><span title='2022-07-10 00:00:00 +0000 UTC'>July 10, 2022</span>
+
+</div>
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#subject" aria-label="Subject">Subject</a></li>
+                <li>
+                    <a href="#find-the-transmitted-signal" aria-label="Find the transmitted signal">Find the transmitted signal</a></li>
+                <li>
+                    <a href="#decode-the-signal" aria-label="Decode the signal">Decode the signal</a>
+                </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><h2 id="subject">Subject<a hidden class="anchor" aria-hidden="true" href="#subject">#</a></h2>
+<blockquote>
+<p>At nightfall, everything lights up. A beacon emits a signal in order to be recovered. The signal is transmitted at 3.58 MHz every minute for about 30 seconds. Find the message transmitted. The flag is of the form HACKDAY{&hellip;}</p>
+</blockquote>
+<h2 id="find-the-transmitted-signal">Find the transmitted signal<a hidden class="anchor" aria-hidden="true" href="#find-the-transmitted-signal">#</a></h2>
+<p>According to the subject, the signal is only transmitted in the evening.</p>
+<p>By going to <a href="http://f5nkp.freeboxos.fr:8073/">WebSDR F5NKP</a> (for example) we will be able to listen to the different signals transmitted on the radio waves.</p>
+<p>
+
+<input type="checkbox" id="zoomCheck-f697f" hidden>
+<label for="zoomCheck-f697f">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/ce857ec5-ef49-41a5-90b7-512c670ebeb5.png#center" alt=""  />
+</label></p>
+<p>We must then go to the good frequency, at 3.58 MHz (3580 kHz).</p>
+<p>After having tested the different modes, CW seems to be the most conclusive.</p>
+<p>
+
+<input type="checkbox" id="zoomCheck-a7e6e" hidden>
+<label for="zoomCheck-a7e6e">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/0414cdc4-62be-4093-9e53-628a4427efa3.png#center" alt=""  />
+</label></p>
+<p>Indeed, it is on this one that we can hear a signal emitted every minute for about 30s quite distinctly.</p>
+<p><del>We could think at first that it looks like morse code.</del></p>
+<p>
+
+<input type="checkbox" id="zoomCheck-cbc2a" hidden>
+<label for="zoomCheck-cbc2a">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/ddf65cac-1a4a-4efa-b819-5d9befd06367.png#center" alt=""  />
+</label></p>
+<p>We can notice that a similar signal is also emitted 400 Hz further.</p>
+<h2 id="decode-the-signal">Decode the signal<a hidden class="anchor" aria-hidden="true" href="#decode-the-signal">#</a></h2>
+<p>For the rest of the analysis, I recorded the two signals to be able to analyze them locally.</p>
+<p>After many hours without finding anything, I decided to take a first hint (these cost points and are included in each challenge).</p>
+<blockquote>
+<p>Hint : FSK</p>
+</blockquote>
+<p>Thanks to this one I could understand that it was about signal modulation.</p>
+<p>Wikipedia definition:</p>
+<blockquote>
+<p>Frequency shift keying (FSK) is a digital frequency modulation mode in which the frequency of the modulated signal varies between predetermined frequencies.</p>
+</blockquote>
+<p>To make simple, this modulation makes it possible to retranscribe a binary message in the form of signal, in which the 2 predefined frequencies represent the 0 and the 1.</p>
+<p>
+
+<input type="checkbox" id="zoomCheck-7db47" hidden>
+<label for="zoomCheck-7db47">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/8c584846-1628-44f8-a9cb-026e71d2d55c.png#center" alt=""  />
+</label></p>
+<p>This is visible in the Audacity frequency analyzer with two frequency peaks, one at 470 Hz and the other at 870 Hz. This is the same as the 400 Hz spacing between the two transmitted signals seen above.</p>
+<p>
+
+<input type="checkbox" id="zoomCheck-e1813" hidden>
+<label for="zoomCheck-e1813">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/366c2139-37b9-4968-9e2f-535baccd66fc.png#center" alt=""  />
+</label></p>
+<p>Once you zoom in on the signal, you can see the 0 and 1 that &ldquo;appear&rdquo;.</p>
+<p>To decode the whole we can have 2 approaches:</p>
+<ul>
+<li>
+<p>manual</p>
+</li>
+<li>
+<p>automated</p>
+</li>
+</ul>
+<p>As I didn&rsquo;t find anything conclusive to automate my task, I decided to do it manually.</p>
+<p>
+
+<input type="checkbox" id="zoomCheck-f392f" hidden>
+<label for="zoomCheck-f392f">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/5c473371-d00f-40e3-be9b-dc219a1e6a04.png#center" alt=""  />
+</label></p>
+<p>Thanks to the first &ldquo;bits&rdquo; of the signal (the padding), we can settle on the fact that a bit measures about 2 cm <del>(yes it is quite archaic as a method)</del>.</p>
+<p>I was then helped by a member of my team who noted the bits while I &ldquo;read&rdquo; them on Audacity.</p>
+<p>Halfway through (more precisely, at what looked like the padding at the beginning), I started trying to convert the result from binary to ASCII, which was inconclusive.</p>
+<p>So I tried to search for &ldquo;HACKDAY{}&rdquo;, character by character, in all this sequence of 0 and 1, which allowed me to realize that each of them was preceded by a bit and succeeded by 3 bits.</p>
+<p>These turned out to be the UART bits.</p>
+<p>
+
+<input type="checkbox" id="zoomCheck-9ac36" hidden>
+<label for="zoomCheck-9ac36">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/ddd2b73c-4be7-4faa-8b20-b7e9331f866a.png#center" alt=""  />
+</label></p>
+<p>By identifying the characters one by one, and skipping the ones that were badly decoded, I was able to find the flag and solve the challenge.</p>
+<p>Thank you <a href="https://linkedin.com/in/quentin-chauvin">Quentin CHAUVIN</a> for this challenge and for your advice.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://malsius.com/tags/ctf/">ctf</a></li>
+      <li><a href="https://malsius.com/tags/hackday/">hackday</a></li>
+      <li><a href="https://malsius.com/tags/hardware/">hardware</a></li>
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2024 Malsius</span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

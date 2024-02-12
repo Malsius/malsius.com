@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>HackDay 2022 - QWERTY | Malsius</title>
+<meta name="keywords" content="ctf, hackday, forensic">
+<meta name="description" content="Subject Flag is typed !
+Challenge analysis The file provided with this challenge is a packet capture file (.pcap).
+So we open it with Wireshark.
+We can see that the captured packets’s protocol is USB.
+From the title and the subject of the challenge, and the fact that we have to find a flag, we can assume that this capture is from a QWERTY keyboard.
+First we have to extract the captured data to be able to process them in an automated way.">
+<meta name="author" content="">
+<link rel="canonical" href="https://malsius.com/hackday-2022-qwerty/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.5cfc680b1eeaeef9efbced92d46c2a9e876b72ee14fba85846afc4cff9e6e6f8.css" integrity="sha256-XPxoCx7q7vnvvO2S1Gwqnodrcu4U&#43;6hYRq/Ez/nm5vg=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://malsius.com/favicons/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://malsius.com/favicons/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://malsius.com/favicons/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://malsius.com/favicons/apple-touch-icon.png">
+<link rel="mask-icon" href="https://malsius.com/favicons/favicon.ico">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+</noscript><style>
+    @media screen and (min-width: 769px) {
+
+         
+        .post-content input[type="checkbox"]:checked~label>img {
+            transform: scale(1.6);
+            cursor: zoom-out;
+            position: relative;
+            z-index: 999;
+        }
+
+        .post-content img.zoomCheck {
+            transition: transform 0.15s ease;
+            z-index: 999;
+            cursor: zoom-in;
+        }
+    }
+</style>
+<meta property="og:title" content="HackDay 2022 - QWERTY" />
+<meta property="og:description" content="Subject Flag is typed !
+Challenge analysis The file provided with this challenge is a packet capture file (.pcap).
+So we open it with Wireshark.
+We can see that the captured packets’s protocol is USB.
+From the title and the subject of the challenge, and the fact that we have to find a flag, we can assume that this capture is from a QWERTY keyboard.
+First we have to extract the captured data to be able to process them in an automated way." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://malsius.com/hackday-2022-qwerty/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-07-03T00:00:00+00:00" />
+<meta property="article:modified_time" content="2022-07-03T00:00:00+00:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="HackDay 2022 - QWERTY"/>
+<meta name="twitter:description" content="Subject Flag is typed !
+Challenge analysis The file provided with this challenge is a packet capture file (.pcap).
+So we open it with Wireshark.
+We can see that the captured packets’s protocol is USB.
+From the title and the subject of the challenge, and the fact that we have to find a flag, we can assume that this capture is from a QWERTY keyboard.
+First we have to extract the captured data to be able to process them in an automated way."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Posts",
+      "item": "https://malsius.com/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "HackDay 2022 - QWERTY",
+      "item": "https://malsius.com/hackday-2022-qwerty/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "HackDay 2022 - QWERTY",
+  "name": "HackDay 2022 - QWERTY",
+  "description": "Subject Flag is typed !\nChallenge analysis The file provided with this challenge is a packet capture file (.pcap).\nSo we open it with Wireshark.\nWe can see that the captured packets’s protocol is USB.\nFrom the title and the subject of the challenge, and the fact that we have to find a flag, we can assume that this capture is from a QWERTY keyboard.\nFirst we have to extract the captured data to be able to process them in an automated way.",
+  "keywords": [
+    "ctf", "hackday", "forensic"
+  ],
+  "articleBody": "Subject Flag is typed !\nChallenge analysis The file provided with this challenge is a packet capture file (.pcap).\nSo we open it with Wireshark.\nWe can see that the captured packets’s protocol is USB.\nFrom the title and the subject of the challenge, and the fact that we have to find a flag, we can assume that this capture is from a QWERTY keyboard.\nFirst we have to extract the captured data to be able to process them in an automated way.\nFor this we can use tshark:\ntshark -r qwerty.pcap -T fields -e usb.capdata \u003e qwerty.data\nWith this documentation we can see that keyboard captures are encoded on 8 bytes as follows:\nThe first byte is encoded as follows:\nIf the SHIFT key (left or right) is pressed, the first byte will be set to 0x02 or 0x20.\nThe second byte is always set to 0x00.\nFor the correspondence of the pressed keys (next 6 bytes), you can refer to the HID usage table.\nIt should be taken into account that CAPS LOCK only has an effect on letters, and that if it is activated and the SHIFT key is pressed, the letters will be in lower case again.\nDecoding data To automate the data decoding, you can find at here a script made for the occasion in Python.\nOnce the script is executed we can see the flag !\n",
+  "wordCount" : "232",
+  "inLanguage": "en",
+  "datePublished": "2022-07-03T00:00:00Z",
+  "dateModified": "2022-07-03T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://malsius.com/hackday-2022-qwerty/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Malsius",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://malsius.com/favicons/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class=" dark" id="top">
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://malsius.com" accesskey="h" title="Malsius (Alt + H)">
+                <img src="https://malsius.com/avatar.png" alt="" aria-label="logo"
+                    height="30">Malsius</a>
+            <div class="logo-switches">
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://malsius.com/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://malsius.com/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://malsius.com/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://malsius.com/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      HackDay 2022 - QWERTY
+    </h1>
+    <div class="post-meta"><span title='2022-07-03 00:00:00 +0000 UTC'>July 3, 2022</span>
+
+</div>
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#subject" aria-label="Subject"><strong>Subject</strong></a></li>
+                <li>
+                    <a href="#challenge-analysis" aria-label="Challenge analysis"><strong>Challenge analysis</strong></a></li>
+                <li>
+                    <a href="#decoding-data" aria-label="Decoding data"><strong>Decoding data</strong></a>
+                </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><h2 id="subject"><strong>Subject</strong><a hidden class="anchor" aria-hidden="true" href="#subject">#</a></h2>
+<blockquote>
+<p>Flag is typed !</p>
+</blockquote>
+<h2 id="challenge-analysis"><strong>Challenge analysis</strong><a hidden class="anchor" aria-hidden="true" href="#challenge-analysis">#</a></h2>
+<p>The file provided with this challenge is a packet capture file (.pcap).</p>
+<p>So we open it with Wireshark.</p>
+<p>
+
+<input type="checkbox" id="zoomCheck-4523b" hidden>
+<label for="zoomCheck-4523b">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/abf477bd-7e35-4b1a-9e7c-acff61e1b606.png#center" alt=""  />
+</label></p>
+<p>We can see that the captured packets’s protocol is USB.</p>
+<p>From the title and the subject of the challenge, and the fact that we have to find a flag, we can assume that this capture is from a QWERTY keyboard.</p>
+<p>First we have to extract the captured data to be able to process them in an automated way.</p>
+<p>For this we can use <code>tshark</code>:</p>
+<p><code>tshark -r qwerty.pcap -T fields -e usb.capdata &gt; qwerty.data</code></p>
+<p>
+
+<input type="checkbox" id="zoomCheck-5fdca" hidden>
+<label for="zoomCheck-5fdca">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/d52d587b-3521-4d3c-b822-aade40ad5676.png#center" alt=""  />
+</label></p>
+<p>With <a href="https://wiki.osdev.org/USB_Human_Interface_Devices">this documentation</a> we can see that keyboard captures are encoded on 8 bytes as follows:</p>
+<p>
+
+<input type="checkbox" id="zoomCheck-c20d3" hidden>
+<label for="zoomCheck-c20d3">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/697493e1-050b-470d-a808-1ff7c6af344a.png#center" alt=""  />
+</label></p>
+<p>The first byte is encoded as follows:</p>
+<p>
+
+<input type="checkbox" id="zoomCheck-ab5b8" hidden>
+<label for="zoomCheck-ab5b8">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/42571bad-8c6c-4149-a0d4-a73fa41bfece.png#center" alt=""  />
+</label></p>
+<p>If the <code>SHIFT</code> key (left or right) is pressed, the first byte will be set to 0x02 or 0x20.</p>
+<p>The second byte is always set to 0x00.</p>
+<p>For the correspondence of the pressed keys (next 6 bytes), you can refer to the <a href="https://usb.org/sites/default/files/hut1_3_0.pdf">HID usage table</a>.</p>
+<p>It should be taken into account that <code>CAPS LOCK</code> only has an effect on letters, and that if it is activated and the <code>SHIFT</code> key is pressed, the letters will be in lower case again.</p>
+<h2 id="decoding-data"><strong>Decoding data</strong><a hidden class="anchor" aria-hidden="true" href="#decoding-data">#</a></h2>
+<p>To automate the data decoding, you can find at <a href="https://github.com/Malsius/usb_hid_decode">here</a> a script made for the occasion in Python.</p>
+<p>Once the script is executed we can see the flag !</p>
+<p>
+
+<input type="checkbox" id="zoomCheck-18091" hidden>
+<label for="zoomCheck-18091">
+    <img class="zoomCheck" loading="lazy" decoding="async" src="/images/a6e245e9-0185-4366-b211-2dc6c3d2a4d9.png#center" alt=""  />
+</label></p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://malsius.com/tags/ctf/">ctf</a></li>
+      <li><a href="https://malsius.com/tags/hackday/">hackday</a></li>
+      <li><a href="https://malsius.com/tags/forensic/">forensic</a></li>
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2024 Malsius</span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

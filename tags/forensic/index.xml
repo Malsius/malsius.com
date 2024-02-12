@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>forensic on Malsius</title>
+    <link>https://malsius.com/tags/forensic/</link>
+    <description>Recent content in forensic on Malsius</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sun, 03 Jul 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://malsius.com/tags/forensic/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>HackDay 2022 - QWERTY</title>
+      <link>https://malsius.com/hackday-2022-qwerty/</link>
+      <pubDate>Sun, 03 Jul 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://malsius.com/hackday-2022-qwerty/</guid>
+      <description>Subject Flag is typed !
+Challenge analysis The file provided with this challenge is a packet capture file (.pcap).
+So we open it with Wireshark.
+We can see that the captured packets’s protocol is USB.
+From the title and the subject of the challenge, and the fact that we have to find a flag, we can assume that this capture is from a QWERTY keyboard.
+First we have to extract the captured data to be able to process them in an automated way.</description>
+    </item>
+    
+  </channel>
+</rss>
